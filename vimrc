@@ -38,9 +38,10 @@ set fo-=t                      " Do no auto-wrap text using textwidth (does not 
 set nowrap
 set textwidth=0                " Don't wrap lines by default
 
-set tabstop=2                  " tab size eql 2 spaces
-set softtabstop=2
-set shiftwidth=2               " default shift width for indents
+set expandtab
+set tabstop=4                  " tab size eql 4 spaces
+set softtabstop=4
+set shiftwidth=4               " default shift width for indents
 set expandtab                  " replace tabs with ${tabstop} spaces
 set smarttab                   "
 
@@ -65,7 +66,7 @@ syntax on                      " enable syntax
 set mouse=a "enable mouse in GUI mode
 set mousehide                 " Hide mouse after chars typed
 
-set nonumber                  " line numbers Off
+set number                  " line numbers on
 set showmatch                 " Show matching brackets.
 set matchtime=2               " Bracket blinking.
 
@@ -98,10 +99,10 @@ set foldopen+=quickfix
 set splitbelow
 set splitright
 
-set list                      " display unprintable characters f12 - switches
-set listchars=tab:\ ·,eol:¬
-set listchars+=trail:·
-set listchars+=extends:»,precedes:«
+" set list                      " display unprintable characters f12 - switches
+" set listchars=tab:\ ·,eol:¬
+" set listchars+=trail:·
+" set listchars+=extends:»,precedes:«
 map <silent> <F12> :set invlist<CR>
 
 if has('gui_running')
@@ -215,29 +216,32 @@ Bundle 'gmarik/vundle'
 
 " Colorscheme
 Bundle 'molokai'
-Bundle 'nelstrom/vim-mac-classic-theme'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'gmarik/ingretu'
+" Bundle 'nelstrom/vim-mac-classic-theme'
+" Bundle 'altercation/vim-colors-solarized'
+" Bundle 'gmarik/ingretu'
 
-if has("gui_running")
-  colorscheme ingretu
-endif
+" set color scheme and use 256 color
+set t_Co=256
+colorscheme molokai
+set cursorline  "highlight the line cursor is on
+highlight CursorLine guibg=darkgray ctermbg=darkgray
 
 " Programming
-Bundle 'anzaika/go.vim'
-Bundle 'jQuery'
-Bundle 'tpope/vim-rails'
+" Bundle 'anzaika/go.vim'
+" Bundle 'jQuery'
+" Bundle 'tpope/vim-rails'
 
 " Snippets
-Bundle 'gmarik/snipmate.vim'
-Bundle 'honza/snipmate-snippets'
+" Bundle 'gmarik/snipmate.vim'
+" Bundle 'honza/snipmate-snippets'
 "TODO: extact my stuff
 "Bundle 'gh:gmarik/snipmate.vim'
+Bundle 'msanders/snipmate.vim'
 
 " Syntax highlight
-Bundle 'cucumber.zip'
-Bundle 'gmarik/vim-markdown'
-Bundle 'timcharper/textile.vim'
+" Bundle 'cucumber.zip'
+" Bundle 'gmarik/vim-markdown'
+" Bundle 'timcharper/textile.vim'
 
 " Git integration
 Bundle 'tpope/vim-git'
@@ -259,30 +263,30 @@ vmap <M-j> ]egv
 vmap <M-k> [egv
 
 " (HT|X)ml tool
-Bundle 'ragtag.vim'
+" Bundle 'ragtag.vim'
 
 " Utility
-Bundle 'michaeljsmith/vim-indent-object'
+" Bundle 'michaeljsmith/vim-indent-object'
 
 Bundle 'kana/vim-textobj-user'
-Bundle 'nelstrom/vim-textobj-rubyblock'
+" Bundle 'nelstrom/vim-textobj-rubyblock'
 
-Bundle 'gmarik/github-search.vim'
+" Bundle 'gmarik/github-search.vim'
 Bundle 'gmarik/ide-popup.vim'
-Bundle 'gmarik/sudo-gui.vim'
-Bundle 'Gundo'
+" Bundle 'gmarik/sudo-gui.vim'
+" Bundle 'Gundo'
 
-Bundle 'mkitt/browser-refresh.vim'
-com! ONRRB :au! BufWritePost <buffer> :RRB
-com! NORRB :au! BufWritePost <buffer>
+" Bundle 'mkitt/browser-refresh.vim'
+" com! ONRRB :au! BufWritePost <buffer> :RRB
+" com! NORRB :au! BufWritePost <buffer>
 
 
 Bundle 'repeat.vim'
 Bundle 'surround.vim'
 
 " Bundle 'SuperTab'
-Bundle 'file-line'
-Bundle 'Align'
+" Bundle 'file-line'
+" Bundle 'Align'
 Bundle 'lastpos.vim'
 
 Bundle 'Lokaltog/vim-easymotion'
@@ -301,16 +305,16 @@ Bundle 'tComment'
 nnoremap // :TComment<CR>
 vnoremap // :TComment<CR>
 
-Bundle 'gmarik/hlmatch.vim'
-nnoremap # :<C-u>HlmCword<CR>
-nnoremap <leader># :<C-u>HlmGrepCword<CR>
-vnoremap # :<C-u>HlmVSel<CR>
-vnoremap <leader># :<C-u>HlmGrepVSel<CR>
+" Bundle 'gmarik/hlmatch.vim'
+" nnoremap # :<C-u>HlmCword<CR>
+" nnoremap <leader># :<C-u>HlmGrepCword<CR>
+" vnoremap # :<C-u>HlmVSel<CR>
+" vnoremap <leader># :<C-u>HlmGrepVSel<CR>
 
-nnoremap ## :<C-u>HlmPartCword<CR>
-nnoremap <leader>## :<C-u>HlmPartGrepCword<CR>
-vnoremap ## :<C-u>HlmPartVSel<CR>
-vnoremap <leader>## :<C-u>HlmPartGrepVSel<CR>
+" nnoremap ## :<C-u>HlmPartCword<CR>
+" nnoremap <leader>## :<C-u>HlmPartGrepCword<CR>
+" vnoremap ## :<C-u>HlmPartVSel<CR>
+" vnoremap <leader>## :<C-u>HlmPartGrepVSel<CR>
 
 " FuzzyFinder
 Bundle 'L9'
@@ -337,36 +341,36 @@ nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 " " }}}
 
 " Command-T
-Bundle 'wincent/Command-T.git'
-let g:CommandTMatchWindowAtTop=1 " show window at top
+" Bundle 'wincent/Command-T.git'
+" let g:CommandTMatchWindowAtTop=1 " show window at top
 "burke's
-nnoremap <leader>tv :CommandTFlush<cr>\|:CommandT app/views<cr>
-nnoremap <leader>tc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
-nnoremap <leader>tm :CommandTFlush<cr>\|:CommandT app/models<cr>
-nnoremap <leader>tl :CommandTFlush<cr>\|:CommandT lib<cr>
-nnoremap <leader>ta :CommandTFlush<cr>\|:CommandT app/assets<cr>
-nnoremap <leader>tp :CommandTFlush<cr>\|:CommandT public<cr>
-nnoremap <leader>tr :topleft :vsplit config/routes.rb<cr>
-nnoremap <leader>tg :topleft :vsplit Gemfile<cr>
+" nnoremap <leader>tv :CommandTFlush<cr>\|:CommandT app/views<cr>
+" nnoremap <leader>tc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
+" nnoremap <leader>tm :CommandTFlush<cr>\|:CommandT app/models<cr>
+" nnoremap <leader>tl :CommandTFlush<cr>\|:CommandT lib<cr>
+" nnoremap <leader>ta :CommandTFlush<cr>\|:CommandT app/assets<cr>
+" nnoremap <leader>tp :CommandTFlush<cr>\|:CommandT public<cr>
+" nnoremap <leader>tr :topleft :vsplit config/routes.rb<cr>
+" nnoremap <leader>tg :topleft :vsplit Gemfile<cr>
 
 " Misc stuff
-Bundle '~/Dropbox/.gitrepos/utilz.vim.git'
+" Bundle '~/Dropbox/.gitrepos/utilz.vim.git'
 
 " my dev stuff
 " Bundle! '~/.vim/grep.git', {'sync':'no'}
-Bundle '~/.vim/grep.git', {'sync':'no'}
+" Bundle '~/.vim/grep.git', {'sync':'no'}
 
 " trying this
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'neverland.vim--All-colorschemes-suck'
+" Bundle 'kchmck/vim-coffee-script'
+" Bundle 'neverland.vim--All-colorschemes-suck'
 
 " Bundle 'int3/vim-extradite'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'gregsexton/gitv'
-Bundle 'thinca/vim-quickrun.git'
-Bundle 'gh:thinca/vim-poslist.git'
-Bundle 'github:mattn/gist-vim.git'
-Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
+" Bundle 'Lokaltog/vim-powerline'
+" Bundle 'gregsexton/gitv'
+" Bundle 'thinca/vim-quickrun.git'
+" Bundle 'gh:thinca/vim-poslist.git'
+" Bundle 'github:mattn/gist-vim.git'
+" Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
 
 filetype plugin indent on      " Automatically detect file types.
 
