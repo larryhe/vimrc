@@ -128,8 +128,8 @@ endif
 nnoremap <leader>c mz"dyy"dp`z
 vnoremap <leader>c "dymz"dP`z
 
-nnoremap <C-F> <C-U> " swap ^u
-nnoremap <C-U> <C-F> " with ^f : convenience!
+" nnoremap <C-F> <C-U> " swap ^u
+" nnoremap <C-U> <C-F> " with ^f : convenience!
 nnoremap <leader>rs :source ~/.vimrc<CR>
 nnoremap <leader>rt :tabnew ~/.vim/vimrc<CR>
 nnoremap <leader>re :e ~/.vim/vimrc<CR>
@@ -140,8 +140,10 @@ nnoremap <M-h> :tabprev<CR>
 nnoremap <M-l> :tabnext<CR>
 " Esc
 noremap <leader><leader> <Esc>
+inoremap <leader><leader> <Esc>
 noremap <localleader><space> <Esc>
-noremap <Esc> <NOP>
+inoremap <localleader><space> <Esc>
+" noremap <Esc> <NOP>
 
 " Buffers
 nnoremap <localleader>- :bd<CR>
@@ -198,7 +200,7 @@ ab #e # encoding: UTF-8
 " " }}}
 
 " AutoCommands " {{{
-au BufRead,BufNewFile {Gemfile,Rakefile,Capfile,*.rake,config.ru}     set ft=ruby tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab
+au BufRead,BufNewFile {Gemfile,Rakefile,Capfile,*.rake,config.ru}     set ft=ruby tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab
 au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         set ft=markdown
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               set ft=gitcommit noml list| norm 1G
 au! BufWritePost      *.snippet                                       call ReloadAllSnippets()
@@ -371,7 +373,8 @@ nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 " Bundle 'gh:thinca/vim-poslist.git'
 " Bundle 'github:mattn/gist-vim.git'
 " Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
-
+" auto close plugin
+Bundle 'Townk/vim-autoclose'
 filetype plugin indent on      " Automatically detect file types.
 
 " " }}}
