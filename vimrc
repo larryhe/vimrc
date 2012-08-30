@@ -138,9 +138,10 @@ nnoremap <leader>rd :e ~/.vim/ <CR>
 " Tabs
 nnoremap <M-h> :tabprev<CR>
 nnoremap <M-l> :tabnext<CR>
+nnoremap <leader>t :tabnext<CR>
+nnoremap <leader>ff :tabfind 
 " Esc
-noremap <leader><leader> <Esc>
-inoremap <leader><leader> <Esc>
+inoremap ii <Esc>
 noremap <localleader><space> <Esc>
 inoremap <localleader><space> <Esc>
 " noremap <Esc> <NOP>
@@ -375,6 +376,21 @@ nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 " Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
 " auto close plugin
 Bundle 'Townk/vim-autoclose'
+Bundle 'vim-scripts/sessionman.vim'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'vim-scripts/cscope.vim'
+Bundle 'larryhe/getfiles.vim'
+"setting for getfiles plugin (getfiles.vim)
+let g:GetFileIgnoreList = ['*.jpg','*.png','*.gif','*.class','*.jar','*.zip','*/tmp/*','*/bin/*','*/build/*','*/.svn/*','*/.git/*','*/settings/*','*/test/*','*/build_resources/*','*/target/*']
+let g:GetFileAutoFillFolder = 2
+map <leader>gi <Esc>:GetFileCacheFiles<CR>
+map <leader>gf <Esc>:w<CR>:GetFile<CR>
+map <leader>gs <Esc>:w<CR>:SearchFiles<CR>
+" handy key binding starts with <space>
+noremap <space>q <Esc>:wqa<CR>
+inoremap <space>q <Esc>:wqa<CR>
+map <space>g <Esc>:lcd %:p:h<CR>
+
 filetype plugin indent on      " Automatically detect file types.
 
 " " }}}
