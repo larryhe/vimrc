@@ -106,13 +106,14 @@ set splitright
 map <silent> <F12> :set invlist<CR>
 
 if has('gui_running')
-  set guioptions=cMg " console dialogs, do not show menu and toolbar
+  " set guioptions=cMg " console dialogs, do not show menu and toolbar
+  set guifont=Mono\ 12
 
   " Fonts
   if has('mac')
   set guifont=Andale\ Mono:h13
   else
-  set guifont=Terminus:h16
+  set guifont=Mono\ 12
   end
 
   if has('mac')
@@ -225,6 +226,7 @@ Bundle 'molokai'
 
 " set color scheme and use 256 color
 set t_Co=256
+let g:molokai_original=1
 colorscheme molokai
 set cursorline  "highlight the line cursor is on
 highlight CursorLine guibg=darkgray ctermbg=darkgray
