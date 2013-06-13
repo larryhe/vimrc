@@ -6,7 +6,9 @@ set timeoutlen=250             " Time to wait after ESC (default causes an annoy
 set clipboard+=unnamed         " Yanks go on clipboard instead.
 set pastetoggle=<F10>          " toggle between paste and normal: for 'safer' pasting from keyboard
 set shiftround                 " round indent to multiple of 'shiftwidth'
-set tags=./tags;$HOME          " walk directory tree upto $HOME looking for tags
+set tags=.git/tags;$HOME       " consider the repo tags first, then
+                               " walk directory tree upto $HOME looking for tags
+                               " note `;` sets the stop folder. :h file-search
 
 set modeline
 set modelines=5                " default numbers of lines to read for modeline instructions
@@ -22,6 +24,7 @@ set noswapfile                 "
 set hidden                     " The current buffer can be put to the background without writing to disk
 
 set hlsearch                   " highlight search
+set ignorecase                 " be case insensitive when searching
 set smartcase                  " be case sensitive when input has a capital letter
 set incsearch                  " show matches while typing
 
@@ -96,6 +99,8 @@ set foldopen=block,hor,tag    " what movements open folds
 set foldopen+=percent,mark
 set foldopen+=quickfix
 
+set virtualedit=block
+
 set splitbelow
 set splitright
 
@@ -110,6 +115,7 @@ if has('gui_running')
   set guifont=Mono\ 12
 
   " Fonts
+  " :set guifont=* " to launch a GUI dialog
   if has('mac')
   set guifont=Andale\ Mono:h13
   else
@@ -158,8 +164,8 @@ nnoremap <C-J> gEa<CR><ESC>ew
 
 " copy filename 
 map <silent> <leader>. :let @+=expand('%:p').':'.line('.')<CR>
-" copy path
 map <silent> <leader>/ :let @+=expand('%:p:h')<CR>
+" copy path
 
 
 map <S-CR> A<CR><ESC>
@@ -173,6 +179,10 @@ nmap <silent> <C-j> <C-W><C-j>
 nmap <silent> <C-h> <C-W><C-h>
 nmap <silent> <C-l> <C-W><C-l>
 
+  " vertical paragraph-movement
+nmap <C-J> {
+nmap <C-K> }
+
 " vertical split with CommandT
 nnoremap <leader>v :exec ':vnew \| CommandT'<CR>
 " and without
@@ -180,13 +190,18 @@ nnoremap <leader>V :vnew<CR>
 
 if has('mac')
 
-set macmeta
+  if has('gui_running')
+    set macmeta
+  end
 
 " map(range(1,9), 'exec "imap <D-".v:val."> <C-o>".v:val."gt"')
 " map(range(1,9), 'exec " map <D-".v:val."> ".v:val."gt"')
 
 " Copy whole line
 nnoremap <silent> <D-c> yy
+
+" close/delete buffer when closing window
+map <silent> <D-w> :bdelete<CR>
 endif
 
 " Control+S and Control+Q are flow-control characters: disable them in your terminal settings.
@@ -202,8 +217,9 @@ ab #e # encoding: UTF-8
 " " }}}
 
 " AutoCommands " {{{
-au BufRead,BufNewFile {Gemfile,Rakefile,Capfile,*.rake,config.ru}     set ft=ruby tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab
-au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         set ft=markdown
+au BufRead,BufNewFile {Gemfile,Rakefile,Capfile,*.rake,config.ru}     set ft=ruby tabstop=2 softtabstop=2 shiftwidth=2 expandtab smarttab
+au BufRead,BufNewFile {*.md,*.mkd,*.markdown}                         setf markdown
+au BufRead,BufNewFile {*.scala}                                       setf scala
 au! BufReadPost       {COMMIT_EDITMSG,*/COMMIT_EDITMSG}               set ft=gitcommit noml list| norm 1G
 au! BufWritePost      *.snippet                                       call ReloadAllSnippets()
 " open help in vertical split
@@ -271,7 +287,10 @@ vmap <M-k> [egv
 " Bundle 'ragtag.vim'
 
 " Utility
-" Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'michaeljsmith/vim-indent-object'
+Bundle 'AndrewRadev/splitjoin.vim'
+nmap sj :SplitjoinJoin<cr>
+nmap sk :SplitjoinSplit<cr>
 
 Bundle 'kana/vim-textobj-user'
 " Bundle 'nelstrom/vim-textobj-rubyblock'
@@ -327,15 +346,18 @@ Bundle 'FuzzyFinder'
 " FuF customisations "{{{
 let g:fuf_modesDisable = []
 nnoremap <leader>h :FufHelp<CR>
-nnoremap <leader>1  :FufTag<CR>
+nnoremap <leader>1  :FufTagWithCursorWord<CR>
+nnoremap <leader>11 :FufTag<CR>
 nnoremap <leader>2  :FufFileWithCurrentBufferDir<CR>
-nnoremap <leader>@  :FufFile<CR>
+nnoremap <leader>22 :FufFile<CR>
 nnoremap <leader>3  :FufBuffer<CR>
 nnoremap <leader>4  :FufDirWithCurrentBufferDir<CR>
-nnoremap <leader>$  :FufDir<CR>
-nnoremap <leader>5  :FufChangeList<CR>
+nnoremap <leader>44 :FufDir<CR>
+nnoremap <leader>5  :FufBufferTag<CR>
+nnoremap <leader>55 :FufBufferTagAll<CR>
 nnoremap <leader>6  :FufMruFile<CR>
 nnoremap <leader>7  :FufLine<CR>
+nnoremap <leader>8  :FufChangeList<CR>
 nnoremap <leader>9  :FufTaggedFile<CR>
 
 nnoremap <leader>p :FufDir ~/src/<CR>
@@ -348,7 +370,6 @@ nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 " Command-T
 " Bundle 'wincent/Command-T.git'
 " let g:CommandTMatchWindowAtTop=1 " show window at top
-"burke's
 " nnoremap <leader>tv :CommandTFlush<cr>\|:CommandT app/views<cr>
 " nnoremap <leader>tc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
 " nnoremap <leader>tm :CommandTFlush<cr>\|:CommandT app/models<cr>
@@ -358,6 +379,24 @@ nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 " nnoremap <leader>tr :topleft :vsplit config/routes.rb<cr>
 " nnoremap <leader>tg :topleft :vsplit Gemfile<cr>
 
+"
+Bundle 'kien/ctrlp.vim'
+let g:ctrlp_map = '<leader>t'
+let g:ctrlp_max_height = 30
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_height = 20
+let g:ctrlp_match_window_reversed = 1
+let g:ctrlp_switch_buffer = 'e'
+nnoremap <leader>ev :CtrlP app/views<cr>
+nnoremap <leader>ec :CtrlP app/controllers<cr>
+nnoremap <leader>em :CtrlP app/models<cr>
+nnoremap <leader>el :CtrlP lib<cr>
+nnoremap <leader>ea :CtrlP app/assets<cr>
+nnoremap <leader>ep :CtrlP public<cr>
+nnoremap <leader>er :topleft :vsplit config/routes.rb<cr>
+nnoremap <leader>eg :topleft :vsplit Gemfile<cr>
+>>>>>>> upstream/master
+
 " Misc stuff
 " Bundle '~/Dropbox/.gitrepos/utilz.vim.git'
 
@@ -365,18 +404,7 @@ nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 " Bundle! '~/.vim/grep.git', {'sync':'no'}
 " Bundle '~/.vim/grep.git', {'sync':'no'}
 
-" trying this
-" Bundle 'kchmck/vim-coffee-script'
-" Bundle 'neverland.vim--All-colorschemes-suck'
-
-" Bundle 'int3/vim-extradite'
-" Bundle 'Lokaltog/vim-powerline'
-" Bundle 'gregsexton/gitv'
-" Bundle 'thinca/vim-quickrun.git'
-" Bundle 'gh:thinca/vim-poslist.git'
-" Bundle 'github:mattn/gist-vim.git'
-" Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
-" auto close plugin
+" trying this my own configuration and plugin
 Bundle 'Townk/vim-autoclose'
 Bundle 'vim-scripts/sessionman.vim'
 Bundle 'vim-scripts/taglist.vim'
@@ -392,6 +420,19 @@ map <leader>gs <Esc>:w<CR>:SearchFiles<CR>
 noremap <space>q <Esc>:wqa<CR>
 inoremap <space>q <Esc>:wqa<CR>
 map <space>g <Esc>:lcd %:p:h<CR>
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'jimenezrick/vimerl'
+Bundle 'neverland.vim--All-colorschemes-suck'
+
+" Bundle 'int3/vim-extradite'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'gregsexton/gitv'
+Bundle 'thinca/vim-quickrun.git'
+Bundle 'gh:thinca/vim-poslist.git'
+Bundle 'github:mattn/gist-vim.git'
+Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
+let g:sparkupExecuteMapping = '<c-e>'
+let g:sparkupNextMapping = '<c-ee>'
 
 filetype plugin indent on      " Automatically detect file types.
 
