@@ -319,10 +319,10 @@ let g:EasyMotion_leader_key='<LocalLeader>'
 Bundle 'Indent-Guides'
 let g:indent_guides_guide_size = 1
 
-Bundle 'ZoomWin'
-noremap <leader>o :ZoomWin<CR>
-vnoremap <leader>o <C-C>:ZoomWin<CR>
-inoremap <leader>o <C-O>:ZoomWin<CR>
+"Bundle 'ZoomWin'
+"noremap <leader>o :ZoomWin<CR>
+"vnoremap <leader>o <C-C>:ZoomWin<CR>
+"inoremap <leader>o <C-O>:ZoomWin<CR>
 
 Bundle 'tlib'
 Bundle 'tComment'
@@ -341,29 +341,29 @@ vnoremap // :TComment<CR>
 " vnoremap <leader>## :<C-u>HlmPartGrepVSel<CR>
 
 " FuzzyFinder
-Bundle 'L9'
-Bundle 'FuzzyFinder'
+" Bundle 'L9'
+" Bundle 'FuzzyFinder'
 " FuF customisations "{{{
-let g:fuf_modesDisable = []
-nnoremap <leader>h :FufHelp<CR>
-nnoremap <leader>1  :FufTagWithCursorWord<CR>
-nnoremap <leader>11 :FufTag<CR>
-nnoremap <leader>2  :FufFileWithCurrentBufferDir<CR>
-nnoremap <leader>22 :FufFile<CR>
-nnoremap <leader>3  :FufBuffer<CR>
-nnoremap <leader>4  :FufDirWithCurrentBufferDir<CR>
-nnoremap <leader>44 :FufDir<CR>
-nnoremap <leader>5  :FufBufferTag<CR>
-nnoremap <leader>55 :FufBufferTagAll<CR>
-nnoremap <leader>6  :FufMruFile<CR>
-nnoremap <leader>7  :FufLine<CR>
-nnoremap <leader>8  :FufChangeList<CR>
-nnoremap <leader>9  :FufTaggedFile<CR>
+" let g:fuf_modesDisable = []
+" nnoremap <leader>h :FufHelp<CR>
+" nnoremap <leader>1  :FufTagWithCursorWord<CR>
+" nnoremap <leader>11 :FufTag<CR>
+" nnoremap <leader>2  :FufFileWithCurrentBufferDir<CR>
+" nnoremap <leader>22 :FufFile<CR>
+" nnoremap <leader>3  :FufBuffer<CR>
+" nnoremap <leader>4  :FufDirWithCurrentBufferDir<CR>
+" nnoremap <leader>44 :FufDir<CR>
+" nnoremap <leader>5  :FufBufferTag<CR>
+" nnoremap <leader>55 :FufBufferTagAll<CR>
+" nnoremap <leader>6  :FufMruFile<CR>
+" nnoremap <leader>7  :FufLine<CR>
+" nnoremap <leader>8  :FufChangeList<CR>
+" nnoremap <leader>9  :FufTaggedFile<CR>
 
-nnoremap <leader>p :FufDir ~/src/<CR>
-nnoremap <leader>ge :FufDir ~/.rvm/gems/<CR>
+" nnoremap <leader>p :FufDir ~/src/<CR>
+" nnoremap <leader>ge :FufDir ~/.rvm/gems/<CR>
 
-nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
+" nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
 
 " " }}}
 
@@ -395,7 +395,6 @@ nnoremap <leader>ea :CtrlP app/assets<cr>
 nnoremap <leader>ep :CtrlP public<cr>
 nnoremap <leader>er :topleft :vsplit config/routes.rb<cr>
 nnoremap <leader>eg :topleft :vsplit Gemfile<cr>
->>>>>>> upstream/master
 
 " Misc stuff
 " Bundle '~/Dropbox/.gitrepos/utilz.vim.git'
@@ -425,14 +424,14 @@ Bundle 'jimenezrick/vimerl'
 Bundle 'neverland.vim--All-colorschemes-suck'
 
 " Bundle 'int3/vim-extradite'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'gregsexton/gitv'
-Bundle 'thinca/vim-quickrun.git'
-Bundle 'gh:thinca/vim-poslist.git'
-Bundle 'github:mattn/gist-vim.git'
-Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
-let g:sparkupExecuteMapping = '<c-e>'
-let g:sparkupNextMapping = '<c-ee>'
+" Bundle 'Lokaltog/vim-powerline'
+" Bundle 'gregsexton/gitv'
+" Bundle 'thinca/vim-quickrun.git'
+" Bundle 'gh:thinca/vim-poslist.git'
+" Bundle 'github:mattn/gist-vim.git'
+" Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
+" let g:sparkupExecuteMapping = '<c-e>'
+" let g:sparkupNextMapping = '<c-ee>'
 
 filetype plugin indent on      " Automatically detect file types.
 
