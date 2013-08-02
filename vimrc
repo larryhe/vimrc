@@ -6,7 +6,7 @@ set timeoutlen=250             " Time to wait after ESC (default causes an annoy
 set clipboard+=unnamed         " Yanks go on clipboard instead.
 set pastetoggle=<F10>          " toggle between paste and normal: for 'safer' pasting from keyboard
 set shiftround                 " round indent to multiple of 'shiftwidth'
-set tags=.git/tags;$HOME       " consider the repo tags first, then
+set tags=tags,.git/tags,$HOME       " consider the repo tags first, then
                                " walk directory tree upto $HOME looking for tags
                                " note `;` sets the stop folder. :h file-search
 
@@ -163,10 +163,11 @@ nnoremap <C-J> gEa<CR><ESC>ew
 " map <silent> <C-W>s :snew<CR>
 
 " copy filename 
+map <silent> <leader>f :let @+=expand('%')<CR>
 map <silent> <leader>. :let @+=expand('%:p').':'.line('.')<CR>
 map <silent> <leader>/ :let @+=expand('%:p:h')<CR>
 " copy path
-
+nmap <leader>yw :let @+=expand('<cword>')<CR>
 
 map <S-CR> A<CR><ESC>
 
@@ -422,6 +423,7 @@ map <space>g <Esc>:lcd %:p:h<CR>
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'jimenezrick/vimerl'
 Bundle 'neverland.vim--All-colorschemes-suck'
+"Bundle ''
 
 " Bundle 'int3/vim-extradite'
 " Bundle 'Lokaltog/vim-powerline'
