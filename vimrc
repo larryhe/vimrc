@@ -6,10 +6,12 @@ set timeoutlen=250             " Time to wait after ESC (default causes an annoy
 set clipboard+=unnamed         " Yanks go on clipboard instead.
 set pastetoggle=<F10>          " toggle between paste and normal: for 'safer' pasting from keyboard
 set shiftround                 " round indent to multiple of 'shiftwidth'
-set tags=tags,.git/tags,$HOME       " consider the repo tags first, then
+set tags=js.tags,tags,.git/tags,$HOME       " consider the repo tags first, then
                                " walk directory tree upto $HOME looking for tags
                                " note `;` sets the stop folder. :h file-search
 
+set path+=*/src/main/**
+set wildignore+=*/target/*,*.class,*.jar,*.zip,*.jpg,*.png,*.gif,*.tgz
 set modeline
 set modelines=5                " default numbers of lines to read for modeline instructions
 
@@ -145,8 +147,6 @@ nnoremap <leader>rd :e ~/.vim/ <CR>
 " Tabs
 nnoremap <M-h> :tabprev<CR>
 nnoremap <M-l> :tabnext<CR>
-nnoremap <leader>t :tabnext<CR>
-nnoremap <leader>ff :tabfind 
 " Esc
 inoremap ii <Esc>
 noremap <localleader><space> <Esc>
@@ -168,12 +168,14 @@ map <silent> <leader>. :let @+=expand('%:p').':'.line('.')<CR>
 map <silent> <leader>/ :let @+=expand('%:p:h')<CR>
 " copy path
 nmap <leader>yw :let @+=expand('<cword>')<CR>
-
 map <S-CR> A<CR><ESC>
 
 map <leader>E :Explore<CR>
 map <leader>EE :Vexplore!<CR><C-W>=
 
+" copy to clipboard
+vmap <C-x> :!pbcopy<CR>  
+vmap <C-c> :w !pbcopy<CR><CR>
 " Make Control-direction switch between windows (like C-W h, etc)
 nmap <silent> <C-k> <C-W><C-k>
 nmap <silent> <C-j> <C-W><C-j>
@@ -388,14 +390,7 @@ let g:ctrlp_match_window_bottom=1
 let g:ctrlp_max_height = 20
 let g:ctrlp_match_window_reversed = 1
 let g:ctrlp_switch_buffer = 'e'
-nnoremap <leader>ev :CtrlP app/views<cr>
-nnoremap <leader>ec :CtrlP app/controllers<cr>
-nnoremap <leader>em :CtrlP app/models<cr>
-nnoremap <leader>el :CtrlP lib<cr>
-nnoremap <leader>ea :CtrlP app/assets<cr>
-nnoremap <leader>ep :CtrlP public<cr>
-nnoremap <leader>er :topleft :vsplit config/routes.rb<cr>
-nnoremap <leader>eg :topleft :vsplit Gemfile<cr>
+nnoremap <leader>bl :CtrlPBuffer <cr>
 
 " Misc stuff
 " Bundle '~/Dropbox/.gitrepos/utilz.vim.git'
@@ -407,22 +402,26 @@ nnoremap <leader>eg :topleft :vsplit Gemfile<cr>
 " trying this my own configuration and plugin
 Bundle 'Townk/vim-autoclose'
 Bundle 'vim-scripts/sessionman.vim'
+Bundle 'majutsushi/tagbar'
 Bundle 'vim-scripts/taglist.vim'
+Bundle 'clausreinke/scoped_tags'
 Bundle 'vim-scripts/cscope.vim'
-Bundle 'larryhe/getfiles.vim'
-"setting for getfiles plugin (getfiles.vim)
-let g:GetFileIgnoreList = ['*.jpg','*.png','*.gif','*.class','*.jar','*.zip','*/tmp/*','*/bin/*','*/build/*','*/.svn/*','*/.git/*','*/settings/*','*/test/*','*/build_resources/*','*/target/*']
-let g:GetFileAutoFillFolder = 2
-map <leader>gi <Esc>:GetFileCacheFiles<CR>
-map <leader>gf <Esc>:w<CR>:GetFile<CR>
-map <leader>gs <Esc>:w<CR>:SearchFiles<CR>
+Bundle 'mileszs/ack.vim'
+Bundle 'Chiel92/vim-autoformat'
+Bundle 'marijnh/tern_for_vim'
+nnoremap <leader>af :Autoformat <cr><cr>
+nnoremap <leader>cq :cclose <cr>
 " handy key binding starts with <space>
 noremap <space>q <Esc>:wqa<CR>
 inoremap <space>q <Esc>:wqa<CR>
 map <space>g <Esc>:lcd %:p:h<CR>
+vmap <C-x> :!pbcopy<CR>  
+vmap <C-c> :w !pbcopy<CR><CR>
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'jimenezrick/vimerl'
 Bundle 'neverland.vim--All-colorschemes-suck'
+Bundle 'scrooloose/syntastic'
+let g:syntastic_javascript_checkers=['jshint']
 "Bundle ''
 
 " Bundle 'int3/vim-extradite'
