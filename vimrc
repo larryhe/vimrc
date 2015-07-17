@@ -11,7 +11,7 @@ set tags=js.tags,tags,.git/tags,$HOME       " consider the repo tags first, then
                                " note `;` sets the stop folder. :h file-search
 
 set path+=*/src/main/**
-set wildignore+=*/target/*,*.class,*.jar,*.zip,*.jpg,*.png,*.gif,*.tgz
+set wildignore+=*/target/*,*/bin/*,*.class,*.jar,*.zip,*.jpg,*.png,*.gif,*.tgz
 set modeline
 set modelines=5                " default numbers of lines to read for modeline instructions
 
@@ -421,6 +421,7 @@ Bundle 'kchmck/vim-coffee-script'
 Bundle 'jimenezrick/vimerl'
 Bundle 'neverland.vim--All-colorschemes-suck'
 Bundle 'scrooloose/syntastic'
+Bundle 'Shougo/unite.vim'
 let g:syntastic_javascript_checkers=['jshint']
 "Bundle ''
 
