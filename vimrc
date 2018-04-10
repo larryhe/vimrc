@@ -10,8 +10,9 @@ set tags=js.tags,tags,.git/tags,$HOME       " consider the repo tags first, then
                                " walk directory tree upto $HOME looking for tags
                                " note `;` sets the stop folder. :h file-search
 
-set path+=*/src/main/**
-set wildignore+=*/target/*,*/bin/*,*.class,*.jar,*.zip,*.jpg,*.png,*.gif,*.tgz
+set path+=*/src/main/webapp/**
+set wildignore+=*/target/*,*/build/*,*/bin/*,*.class,*.jar,*.zip,*.jpg,*.png,*.gif,*.tgz,*/yarn-cache/*,*/npm-cache/*
+set wildmenu
 set modeline
 set modelines=5                " default numbers of lines to read for modeline instructions
 
@@ -29,6 +30,7 @@ set hlsearch                   " highlight search
 set ignorecase                 " be case insensitive when searching
 set smartcase                  " be case sensitive when input has a capital letter
 set incsearch                  " show matches while typing
+set relativenumber             " use relative number
 
 let g:is_posix = 1             " vim's default is archaic bourne shell, bring it up to the 90s
 let mapleader = ','
@@ -147,6 +149,7 @@ nnoremap <leader>rd :e ~/.vim/ <CR>
 " Tabs
 nnoremap <M-h> :tabprev<CR>
 nnoremap <M-l> :tabnext<CR>
+nnoremap <leader><Tab> :b#<CR>
 " Esc
 inoremap ii <Esc>
 noremap <localleader><space> <Esc>
@@ -156,6 +159,9 @@ inoremap <localleader><space> <Esc>
 " Buffers
 nnoremap <localleader>- :bd<CR>
 nnoremap <localleader>-- :bd!<CR>
+nnoremap <leader>be :CtrlPBuffer<CR>
+nnoremap <silent>   <tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
+nnoremap <silent> <s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
 " Split line(opposite to S-J joining line)
 nnoremap <C-J> gEa<CR><ESC>ew
 
@@ -164,7 +170,7 @@ nnoremap <C-J> gEa<CR><ESC>ew
 
 " copy filename 
 map <silent> <leader>f :let @+=expand('%')<CR>
-map <silent> <leader>. :let @+=expand('%:p').':'.line('.')<CR>
+map tsilent> <leader>. :let @+=expand('%:p').':'.line('.')<CR>
 map <silent> <leader>/ :let @+=expand('%:p:h')<CR>
 " copy path
 nmap <leader>yw :let @+=expand('<cword>')<CR>
@@ -233,43 +239,20 @@ au BufWinEnter *.txt if &ft == 'help' | wincmd H | endif
 filetype off
 runtime macros/matchit.vim
 set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+call plug#begin('~/.vim/bundle')
 
 " Colorscheme
-Bundle 'molokai'
-" Bundle 'nelstrom/vim-mac-classic-theme'
-" Bundle 'altercation/vim-colors-solarized'
-" Bundle 'gmarik/ingretu'
-
-" set color scheme and use 256 color
-set t_Co=256
-let g:molokai_original=1
-colorscheme molokai
-set cursorline  "highlight the line cursor is on
-highlight CursorLine guibg=darkgray ctermbg=darkgray
-
-" Programming
-" Bundle 'anzaika/go.vim'
-" Bundle 'jQuery'
-" Bundle 'tpope/vim-rails'
-
-" Snippets
-" Bundle 'gmarik/snipmate.vim'
-" Bundle 'honza/snipmate-snippets'
-"TODO: extact my stuff
-"Bundle 'gh:gmarik/snipmate.vim'
-Bundle 'msanders/snipmate.vim'
-
-" Syntax highlight
-" Bundle 'cucumber.zip'
-" Bundle 'gmarik/vim-markdown'
-" Bundle 'timcharper/textile.vim'
+Plug 'tomasr/molokai'
+Plug 'msanders/snipmate.vim'
 
 " Git integration
-Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-fugitive'
+Plug 'tpope/vim-git'
+Plug 'tpope/vim-fugitive'
 
 nnoremap <leader>W :Gwrite<CR>
 nnoremap <leader>C :Gcommit -v<CR>
@@ -278,7 +261,7 @@ inoremap <leader>W <Esc><leader>W
 inoremap <leader>C <Esc><leader>C
 inoremap <leader>S <Esc><leader>S
 
-Bundle 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 " bubble current line
 nmap <M-j> ]e
 nmap <M-k> [e
@@ -286,155 +269,75 @@ nmap <M-k> [e
 vmap <M-j> ]egv
 vmap <M-k> [egv
 
-" (HT|X)ml tool
-" Bundle 'ragtag.vim'
-
-" Utility
-Bundle 'michaeljsmith/vim-indent-object'
-Bundle 'AndrewRadev/splitjoin.vim'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'AndrewRadev/splitjoin.vim'
 nmap sj :SplitjoinJoin<cr>
 nmap sk :SplitjoinSplit<cr>
 
-Bundle 'kana/vim-textobj-user'
-" Bundle 'nelstrom/vim-textobj-rubyblock'
-
-" Bundle 'gmarik/github-search.vim'
-Bundle 'gmarik/ide-popup.vim'
-" Bundle 'gmarik/sudo-gui.vim'
-" Bundle 'Gundo'
-
-" Bundle 'mkitt/browser-refresh.vim'
-" com! ONRRB :au! BufWritePost <buffer> :RRB
-" com! NORRB :au! BufWritePost <buffer>
+Plug 'kana/vim-textobj-user'
+Plug 'gmarik/ide-popup.vim'
 
 
-Bundle 'repeat.vim'
-Bundle 'surround.vim'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
 
-" Bundle 'SuperTab'
-" Bundle 'file-line'
-" Bundle 'Align'
-Bundle 'lastpos.vim'
-
-Bundle 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-easymotion'
 let g:EasyMotion_leader_key='<LocalLeader>'
 
-Bundle 'Indent-Guides'
+Plug 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_guide_size = 1
 
-"Bundle 'ZoomWin'
-"noremap <leader>o :ZoomWin<CR>
-"vnoremap <leader>o <C-C>:ZoomWin<CR>
-"inoremap <leader>o <C-O>:ZoomWin<CR>
 
-Bundle 'tlib'
-Bundle 'tComment'
+Plug 'tomtom/tlib_vim'
+Plug 'tomtom/tcomment_vim'
 nnoremap // :TComment<CR>
 vnoremap // :TComment<CR>
 
-" Bundle 'gmarik/hlmatch.vim'
-" nnoremap # :<C-u>HlmCword<CR>
-" nnoremap <leader># :<C-u>HlmGrepCword<CR>
-" vnoremap # :<C-u>HlmVSel<CR>
-" vnoremap <leader># :<C-u>HlmGrepVSel<CR>
-
-" nnoremap ## :<C-u>HlmPartCword<CR>
-" nnoremap <leader>## :<C-u>HlmPartGrepCword<CR>
-" vnoremap ## :<C-u>HlmPartVSel<CR>
-" vnoremap <leader>## :<C-u>HlmPartGrepVSel<CR>
-
-" FuzzyFinder
-" Bundle 'L9'
-" Bundle 'FuzzyFinder'
-" FuF customisations "{{{
-" let g:fuf_modesDisable = []
-" nnoremap <leader>h :FufHelp<CR>
-" nnoremap <leader>1  :FufTagWithCursorWord<CR>
-" nnoremap <leader>11 :FufTag<CR>
-" nnoremap <leader>2  :FufFileWithCurrentBufferDir<CR>
-" nnoremap <leader>22 :FufFile<CR>
-" nnoremap <leader>3  :FufBuffer<CR>
-" nnoremap <leader>4  :FufDirWithCurrentBufferDir<CR>
-" nnoremap <leader>44 :FufDir<CR>
-" nnoremap <leader>5  :FufBufferTag<CR>
-" nnoremap <leader>55 :FufBufferTagAll<CR>
-" nnoremap <leader>6  :FufMruFile<CR>
-" nnoremap <leader>7  :FufLine<CR>
-" nnoremap <leader>8  :FufChangeList<CR>
-" nnoremap <leader>9  :FufTaggedFile<CR>
-
-" nnoremap <leader>p :FufDir ~/src/<CR>
-" nnoremap <leader>ge :FufDir ~/.rvm/gems/<CR>
-
-" nnoremap <leader>gn :vnew \| :FufFile ~/src/notes/<CR>
-
-" " }}}
-
-" Command-T
-" Bundle 'wincent/Command-T.git'
-" let g:CommandTMatchWindowAtTop=1 " show window at top
-" nnoremap <leader>tv :CommandTFlush<cr>\|:CommandT app/views<cr>
-" nnoremap <leader>tc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
-" nnoremap <leader>tm :CommandTFlush<cr>\|:CommandT app/models<cr>
-" nnoremap <leader>tl :CommandTFlush<cr>\|:CommandT lib<cr>
-" nnoremap <leader>ta :CommandTFlush<cr>\|:CommandT app/assets<cr>
-" nnoremap <leader>tp :CommandTFlush<cr>\|:CommandT public<cr>
-" nnoremap <leader>tr :topleft :vsplit config/routes.rb<cr>
-" nnoremap <leader>tg :topleft :vsplit Gemfile<cr>
-
-"
-Bundle 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 let g:ctrlp_map = '<leader>t'
+let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_max_height = 30
 let g:ctrlp_match_window_bottom=1
 let g:ctrlp_max_height = 20
 let g:ctrlp_match_window_reversed = 1
 let g:ctrlp_switch_buffer = 'e'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|yarn-cache\|npm-cache'
 nnoremap <leader>bl :CtrlPBuffer <cr>
 
-" Misc stuff
-" Bundle '~/Dropbox/.gitrepos/utilz.vim.git'
-
-" my dev stuff
-" Bundle! '~/.vim/grep.git', {'sync':'no'}
-" Bundle '~/.vim/grep.git', {'sync':'no'}
-
-" trying this my own configuration and plugin
-Bundle 'Townk/vim-autoclose'
-Bundle 'vim-scripts/sessionman.vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'vim-scripts/taglist.vim'
-Bundle 'clausreinke/scoped_tags'
-Bundle 'vim-scripts/cscope.vim'
-Bundle 'mileszs/ack.vim'
-Bundle 'Chiel92/vim-autoformat'
-Bundle 'marijnh/tern_for_vim'
+Plug 'Townk/vim-autoclose'
+Plug 'vim-scripts/sessionman.vim'
+Plug 'majutsushi/tagbar'
+Plug 'vim-scripts/taglist.vim'
+Plug 'clausreinke/scoped_tags'
+Plug 'mileszs/ack.vim'
+Plug 'Chiel92/vim-autoformat'
+Plug 'ternjs/tern_for_vim'
+Plug 'scrooloose/nerdtree'
 nnoremap <leader>af :Autoformat <cr><cr>
-nnoremap <leader>cq :cclose <cr>
+nnoremap <leader>cq :cclose <sr>
+nnoremap <space>n :NERDTreeToggle <cr>
 " handy key binding starts with <space>
 noremap <space>q <Esc>:wqa<CR>
 inoremap <space>q <Esc>:wqa<CR>
 map <space>g <Esc>:lcd %:p:h<CR>
 vmap <C-x> :!pbcopy<CR>  
 vmap <C-c> :w !pbcopy<CR><CR>
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'jimenezrick/vimerl'
-Bundle 'neverland.vim--All-colorschemes-suck'
-Bundle 'scrooloose/syntastic'
-Bundle 'Shougo/unite.vim'
-let g:syntastic_javascript_checkers=['jshint']
-"Bundle ''
-
-" Bundle 'int3/vim-extradite'
-" Bundle 'Lokaltog/vim-powerline'
-" Bundle 'gregsexton/gitv'
-" Bundle 'thinca/vim-quickrun.git'
-" Bundle 'gh:thinca/vim-poslist.git'
-" Bundle 'github:mattn/gist-vim.git'
-" Bundle 'rstacruz/sparkup.git', {'rtp': 'vim/'}
-" let g:sparkupExecuteMapping = '<c-e>'
-" let g:sparkupNextMapping = '<c-ee>'
-
-filetype plugin indent on      " Automatically detect file types.
-
-" " }}}
+" Plug 'kchmck/vim-coffee-script'
+Plug 'jimenezrick/vimerl'
+" Plug 'scrooloose/syntastic'
+Plug 'Shougo/unite.vim'
+Plug 'Valloric/YouCompleteMe'
+Plug 'w0rp/ale'
+let g:ale_linters={'javascript': ['eslint']}
+let g:ale_fixers={'javascript': ['eslint']}
+let g:ale_fix_on_save=1
+" let g:ale_javascript_prettier_use_local_config=1
+" let g:syntastic_javascript_checkers=['jshint']
+call plug#end()
+" set color scheme and use 256 color
+set t_Co=256
+let g:molokai_original=1
+colorscheme molokai
+set cursorline  "highlight the line cursor is on
+highlight CursorLine guibg=darkgray ctermbg=darkgray
